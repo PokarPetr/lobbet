@@ -1,0 +1,4 @@
+ws_url: ws://localhost:8001/events
+bookmaker: admiralbet
+pc_name: pc_name
+job: parser
