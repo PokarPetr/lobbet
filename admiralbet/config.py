@@ -1,11 +1,12 @@
-import logging
-
+from imports import logging
 
 BOOKIE = 'admiralbet'
-MAIN_URL = 'https://webapi.admiralbet.me/SportBookCacheWeb/api/offer/getWebEventsSelections'
+MAIN_URL = 'https://webapi.admiralbet.me'
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15',
     'Content-Type': 'text/plain;charset=UTF-8',
+    'Language': 'en-US',
+    'OfficeId': '1175',
 }
 
 logging.basicConfig(
