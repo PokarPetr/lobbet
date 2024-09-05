@@ -3,24 +3,24 @@ import logging
 from asyncio import Semaphore, sleep, gather
 from aiohttp import ClientSession
 from config import UPDATE_INTERVAL, HEADERS, SEMAPHORE_REQUESTS
-from fetchers import get_events
-from processing import process_event, ALL_MATCHES
+from fetchers import get_matches
+from processing import process_match, ALL_MATCHES
 
 
-async def fetch_and_process_odds():
+async def get_odds():
     """
         Fetches events from AdmiralBet, processes each match and updates the list of parsed matches.
     """
     semaphore = Semaphore(SEMAPHORE_REQUESTS)
     async with ClientSession(headers=HEADERS) as session:
-        events = await get_events(session)
-        tasks = [process_event(event, session, semaphore) for event in events]
+        events = await get_matches(session)
+        tasks = [process_match(event, session, semaphore) for event in events]
         await gather(*tasks)
 
         logging.info(f"Total matches fetched: {len(events)}")
 
 
-async def schedule_odds_updates(interval: int = None):
+async def update_odds_periodically(interval: int = None):
     """
        Periodically updates odds at a specified interval (in seconds).
 
@@ -31,7 +31,7 @@ async def schedule_odds_updates(interval: int = None):
     while True:
         start_time = time.time()
         try:
-            await fetch_and_process_odds()
+            await get_odds()
             logging.info(f"Admiralbet odds updated. Total matches: {len(ALL_MATCHES)}")
         except Exception as e:
             logging.error(f"Error updating odds: {e}")

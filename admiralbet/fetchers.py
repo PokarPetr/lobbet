@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import random
-from imports import ClientSession, gather, logging
+from imports import ClientSession, ClientResponseError, ClientConnectionError, ClientError, gather, logging
 from typing import List, Dict, Any
 from config import MAIN_URL, PROXIES, HEADERS
 from utils import convert_timestamp_to_format
@@ -17,10 +17,17 @@ async def fetch(url: str, session: ClientSession, proxy: str = None) -> Dict | L
     """
     try:
         async with session.get(url, headers=HEADERS, proxy=proxy, timeout=10) as response:
+            response.raise_for_status()
             return await response.json()
+    except ClientResponseError as e:
+        logging.error(f"HTTP error fetching {url}: {e}")
+    except ClientConnectionError as e:
+        logging.error(f"Connection error fetching {url}: {e}")
+    except ClientError as e:
+        logging.error(f"Client error fetching {url}: {e}")
     except Exception as e:
-        logging.error(f"Error fetching {url} with proxy {proxy}: {e}")
-        return []
+        logging.error(f"Unexpected error fetching {url}: {e}")
+    return {}
 
 async def fetch_with_retry(url: str, session: ClientSession, max_retries: int = 3) -> Dict | List:
     """
@@ -77,7 +84,7 @@ async def get_all_leagues(session: ClientSession) -> List[str]:
 
     return leagues_list
 
-async def get_events_detail(url: str, session: ClientSession) -> List[Dict]:
+async def get_match_details(url: str, session: ClientSession) -> List[Dict]:
     """
     Fetches event details from a given URL and processes them into a structured format.
 
@@ -108,7 +115,7 @@ async def get_events_detail(url: str, session: ClientSession) -> List[Dict]:
             data.append(event)
     return data
 
-async def get_events(session: ClientSession) -> List[Dict]:
+async def get_matches(session: ClientSession) -> List[Dict]:
     """
     Fetches events (matches) for all available leagues.
 
@@ -116,7 +123,7 @@ async def get_events(session: ClientSession) -> List[Dict]:
     :return: A list of match dictionaries fetched from the API.
     """
     leagues_urls = await get_all_leagues(session)
-    tasks = [get_events_detail(league_url, session) for league_url in leagues_urls]
+    tasks = [get_match_details(league_url, session) for league_url in leagues_urls]
     responses = await gather(*tasks)
     matches = [match for response in responses for match in response]
     return matches

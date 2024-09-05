@@ -6,7 +6,7 @@ from config import PARSED_MATCHES_DIR
 
 ALL_MATCHES = {}
 
-async def process_event(event: Dict, session: ClientSession, semaphore: Semaphore):
+async def process_match(event: Dict, session: ClientSession, semaphore: Semaphore):
     """
         Processes a match by fetching detailed information, saving it locally, and updating the global match dictionary.
 
