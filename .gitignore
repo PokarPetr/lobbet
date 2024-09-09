@@ -3,6 +3,7 @@ pars_lobbet.py
 .idea/
 old
 
+admiralbet/__pycache__/
 __pycache__/
 *.pyc
 
