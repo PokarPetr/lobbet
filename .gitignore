@@ -2,3 +2,13 @@ Task.md
 pars_lobbet.py
 .idea/
 old
+
+__pycache__/
+*.pyc
+
+*.pyo
+
+*.pyd
+
+env/
+venv/
