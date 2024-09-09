@@ -107,6 +107,7 @@ async def get_match_details(url: str, session: ClientSession) -> List[Dict]:
 
             event['sportName'] = raw_event.get('sportName', '')
             event['competitionId'] = raw_event.get('competitionId', '0')
+            event['competitionName'] = raw_event.get('competitionName', '0')
             event['regionName'] = raw_event.get('regionName', '')
             event['regionId'] = raw_event.get('regionId', '0')
             event['dateTime'] = raw_event.get('dateTime', '0')
