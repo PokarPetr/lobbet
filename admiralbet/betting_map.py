@@ -52,7 +52,7 @@ async def reformat_bets(bets):
         142: {"type_name": "First Time Team Total Away",
               "type_value": lambda name: "1HATO" if name == "Over" else "1HATU"},
         143: {"type_name": "First Time Total Goals", "type_value": lambda name: "1HO" if name == "Over" else "1HU"},
-        152: {"type_name": "1X2 Double Chance"},
+        # 152: {"type_name": "1X2 Double Chance"},
         161: {"type_name": "Second Time Team Total Home",
               "type_value": lambda name: "2HHTO" if name == "Over" else "2HHTU"},
         162: {"type_name": "Second Time Team Total Away",
@@ -67,12 +67,15 @@ async def reformat_bets(bets):
         229: {"type_name": "First Player Wins Set", "type_value": lambda name: "Yes" if name == "Yes" else "No"},
         230: {"type_name": "Second Player Wins Set", "type_value": lambda name: "Yes" if name == "Yes" else "No"},
         454: {"type_name": "1X2"},
-        764: {"type_name": "1X2 No Draw"},
+        # 764: {"type_name": "1X2 No Draw"},
     }
 
     for bet in bets:
         line = 0 if bet.get('sbv') is None else float(bet.get('sbv'))
         bet_type_id = bet.get('betTypeId')
+
+        if bet_type_id not in bet_type_mapping:
+            continue
 
         bet_type_info = bet_type_mapping.get(bet_type_id, {})
         type_name = bet_type_info.get('type_name', '')
@@ -83,8 +86,8 @@ async def reformat_bets(bets):
             if callable(type_name):
                 type_name = type_name(name)
 
-            if bet_type_id in [1154, 1155, 1380]:
-                type_name = determine_type_name(name, str(bet_type_id))
+            # if bet_type_id in [1154, 1155, 1380]:
+            #     type_name = determine_type_name(name, str(bet_type_id))
 
             type_value = bet_type_info.get('type_value', name)
             if callable(type_value):
