@@ -23,6 +23,8 @@ UPDATE_INTERVAL = 15
 
 LOG_DIR = 'logs'
 PARSED_MATCHES_DIR = 'parsed_matches'
+HOST = 'localhost'
+PORT = 8080
 
 REFORMAT_DATA = {
  'event_id': {

@@ -66,7 +66,7 @@ async def get_all_leagues(session: ClientSession) -> List[str]:
     if not all_sports:
         return leagues_list
     for sport in all_sports:
-        if sport.get('name', '').lower() not in ['football', 'soccer', 'tennis']:
+        if sport.get('name', '').lower() not in ['football', 'soccer', 'tennis', 'ice hockey']:
             continue
         sport_id = sport.get('id', '1')
         for league in sport.get('regions', []):
