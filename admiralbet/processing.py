@@ -57,8 +57,8 @@ async def process_match(event: Dict, session: ClientSession, semaphore: Semaphor
             name = f"{event['home_team']} vs {event['away_team']}"
         else:
             name = event.get('name', '')
-        name = name.replace('/', '_').replace('\\', '_')
-        file_name = os.path.join(log_dir, f"{name}.json")
+        name = name.replace('/', '-').replace('\\', '-')
+        file_name = os.path.join(log_dir, f"{name}.jsonl")
 
         event = await reformat_event(event)
         with open(file_name, 'w', encoding='utf-8') as f:

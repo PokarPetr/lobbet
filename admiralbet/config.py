@@ -22,7 +22,7 @@ SEMAPHORE_REQUESTS = 20
 UPDATE_INTERVAL = 15
 
 LOG_DIR = 'logs'
-PARSED_MATCHES_DIR = 'parsed_matches'
+PARSED_MATCHES_DIR = 'odds_data'
 HOST = 'localhost'
 PORT = 8080
 
